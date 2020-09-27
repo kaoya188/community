@@ -1,10 +1,14 @@
 package com.wenqicode.community.dto;
 
+import java.io.Serializable;
+
 /**
  * @author Wenqi Liang
  * @date 2020/9/27
  */
-public class GithubUser {
+public class GithubUser implements Serializable {
+
+    private static final long serialVersionUID = 1;
 
     private String name;
     private Long id;
