@@ -6,7 +6,7 @@
 [ES社区](https://elasticsearch.cn/)     
 [Github deploy key](https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys)   
 [Bootstrap](https://v3.bootcss.com/getting-started/) 
-[Github OAuth Document](https://docs.github.com/en/developers/apps/building-oauth-apps)		
+[Github OAuth Document](https://docs.github.com/en/developers/apps/building-oauth-apps)     
 [菜鸟教程 MySQL](https://www.runoob.com/mysql/mysql-drop-database.html)
  
  

@@ -1,12 +1,16 @@
 package com.wenqicode.community.model;
 
+import java.io.Serializable;
+
 /**
  * 接收数据库对象
  *
  * @author Wenqi Liang
  * @date 2020/9/27
  */
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1;
 
     private Integer id;
     private String name;
