@@ -6,13 +6,14 @@
 [ES社区](https://elasticsearch.cn/)     
 [Github deploy key](https://docs.github.com/en/developers/overview/managing-deploy-keys#deploy-keys)   
 [Bootstrap](https://v3.bootcss.com/getting-started/) 
-[Github OAuth Document](https://docs.github.com/en/developers/apps/building-oauth-apps)     
+[Github OAuth Document](https://docs.github.com/en/developers/apps/building-oauth-apps)        
 [菜鸟教程 MySQL](https://www.runoob.com/mysql/mysql-drop-database.html)
  
  
 ## 工具
 [Git](https://git-scm.com/)    
-[Visual Paradigm](https://www.visual-paradigm.com/cn/) 
+[Visual Paradigm](https://www.visual-paradigm.com/cn/)  
+[Flyway](https://flywaydb.org/getstarted/firststeps/maven#creating-the-first-migration)
 
 ## 脚本
 ```sql
@@ -27,6 +28,7 @@ create table USER
 	constraint TABLE_NAME_PK
 	primary key (ID)
 );
-
-
+```
+```bash
+mvn flyway:migrate
 ```

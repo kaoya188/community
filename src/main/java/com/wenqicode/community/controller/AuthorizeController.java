@@ -50,7 +50,7 @@ public class AuthorizeController {
         GithubUser githubUser = githubProvider.getUser(accessToken);
 
         // 登录操作
-        if (githubUser != null) {
+        if (githubUser != null && githubUser.getId() != null) {
             // 登录成功, 写cookie和session
             User user = new User();
             String token = UUID.randomUUID().toString();
@@ -61,11 +61,10 @@ public class AuthorizeController {
             user.setGmtModified(user.getGmtCreate());
             userMapper.insert(user);
             response.addCookie(new Cookie("token", token));
-            return "redirect:/";
         } else {
             // 登录失败, 重新登录
-            return "redirect:/";
         }
+        return "redirect:/";
     }
 
 
