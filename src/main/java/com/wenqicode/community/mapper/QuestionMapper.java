@@ -1,10 +1,8 @@
 package com.wenqicode.community.mapper;
 
+import com.wenqicode.community.dto.QuestionDTO;
 import com.wenqicode.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -24,4 +22,16 @@ public interface QuestionMapper {
 
     @Select("select count(1) from QUESTION")
     Integer countAll();
+
+    @Select("SELECT * from question where creator = #{userId} limit #{offset}, #{size}")
+    List<Question> listByUserId(@Param("userId") Integer userId, @Param("size") Integer size, @Param("offset") Integer offset);
+
+    @Select("select count(1) from QUESTION where creator = #{userId}")
+    Integer countByUserId(@Param("userId") Integer userId);
+
+    @Select("SELECT * from question where id = #{id}")
+    Question getById(@Param("id") Integer id);
+
+    @Update("update question set title = #{title}, description = #{description}, tag = #{tag}, GMT_MODIFIED = #{gmtModified} where id = #{id}")
+    void update(Question question);
 }

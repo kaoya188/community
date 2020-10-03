@@ -2,9 +2,9 @@ package com.wenqicode.community.controller;
 
 import com.wenqicode.community.dto.AccessTokenDTO;
 import com.wenqicode.community.dto.GithubUser;
-import com.wenqicode.community.mapper.UserMapper;
 import com.wenqicode.community.model.User;
 import com.wenqicode.community.provider.GithubProvider;
+import com.wenqicode.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -30,9 +30,9 @@ public class AuthorizeController {
     @Value("${github.redirect.uri}")
     private String redirectUri;
     @Autowired
-    GithubProvider githubProvider;
+    private GithubProvider githubProvider;
     @Autowired
-    UserMapper userMapper;
+    private UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam("code") String code,
@@ -57,14 +57,23 @@ public class AuthorizeController {
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatarUrl());
-            userMapper.insert(user);
+            // 查询数据库, 更新数据库信息
+            userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));
         } else {
             // 登录失败, 重新登录
         }
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                           HttpServletResponse response) {
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return "redirect:/";
     }
 

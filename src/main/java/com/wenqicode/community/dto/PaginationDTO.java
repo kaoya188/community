@@ -26,9 +26,9 @@ public class PaginationDTO {
 
         // 1. 总页数的判断
         if (totalCount % size == 0) {
-            this.totalPage = totalCount / size;
+            totalPage = totalCount / size;
         }else {
-            this.totalPage = totalCount / size + 1;
+            totalPage = totalCount / size + 1;
         }
 
         if (page < 1) {

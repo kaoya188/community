@@ -34,23 +34,9 @@ public class IndexController {
                         Model model,
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
                         @RequestParam(name = "size", defaultValue = "3") Integer size) {
-        Cookie[] cookies = request.getCookies();
-        String token = null;
-        for (Cookie cookie : cookies) {
-            if ("token".equals(cookie.getName())) {
-                token = cookie.getValue();
-                User user = userMapper.findByToken(token);
-                if (user != null) {
-                    request.getSession().setAttribute("user", user);
-                }
-                break;
-            }
-        }
-
         // 返回主页, 并带上列表展示
         PaginationDTO paginationDTO = questionService.list(page, size);
         model.addAttribute("paginationDTO", paginationDTO);
-
         return "index";
     }
 
