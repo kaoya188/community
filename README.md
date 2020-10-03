@@ -13,7 +13,8 @@
 ## 工具
 [Git](https://git-scm.com/)    
 [Visual Paradigm](https://www.visual-paradigm.com/cn/)  
-[Flyway](https://flywaydb.org/getstarted/firststeps/maven#creating-the-first-migration)
+[Flyway](https://flywaydb.org/getstarted/firststeps/maven#creating-the-first-migration)     
+[Lombok](https://projectlombok.org/)    
 
 ## 脚本
 ```sql

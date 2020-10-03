@@ -17,8 +17,8 @@ public interface UserMapper {
      * 插入数据
      * @param user
      */
-    @Insert("insert into user (NAME, ACCOUNT_ID, TOKEN, GMT_CREATE, GMT_MODIFIED) " +
-            "values (#{name}, #{accountId}, #{token}, #{gmtCreate}, #{gmtModified})")
+    @Insert("insert into user (NAME, ACCOUNT_ID, TOKEN, GMT_CREATE, GMT_MODIFIED, AVATAR_URL) " +
+            "values (#{name}, #{accountId}, #{token}, #{gmtCreate}, #{gmtModified}, #{avatarUrl} )")
     void insert(User user);
 
     /**
@@ -28,4 +28,7 @@ public interface UserMapper {
      */
     @Select("select * from user where token = #{token}")
     User findByToken(@Param("token") String token);
+
+    @Select("Select * from user where id = #{id}")
+    User findById(@Param("id") Integer id);
 }

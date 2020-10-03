@@ -21,7 +21,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">YH中文社区</a>
+            <a class="navbar-brand" href="/">YH中文社区</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -72,12 +72,15 @@
                     <label for="tag">添加标签:</label>
                     <input type="text" class="form-control" id="tag" placeholder="输入标签并以, 号隔开" name="tag" th:value="${tag}">
                 </div>
+                <div class="container-fluid main">
+                    <div class="alert alert-danger hidden col-lg-9 col-md-12 col-sm-12 col-xs-12"
+                         th:text="${error}" th:if="${error != null}">
+                    </div>
+                    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+                        <button class="btn btn-success btn-publish" type="submit">发布</button>
+                    </div>
+                </div>
 
-                <div class="alert alert-danger col-lg-9 col-md-12 col-sm-12 col-xs-12" th:text="${error}">
-                </div>
-                <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                    <button class="btn btn-success btn-publish" type="submit">发布</button>
-                </div>
             </form>
         </div>
         <!-- 右边 -->
