@@ -1,7 +1,6 @@
 package com.wenqicode.community.controller;
 
 import com.wenqicode.community.dto.QuestionDTO;
-import com.wenqicode.community.mapper.QuestionMapper;
 import com.wenqicode.community.mapper.UserMapper;
 import com.wenqicode.community.model.Question;
 import com.wenqicode.community.model.User;
@@ -83,7 +82,7 @@ public class PublishController {
         question.setTitle(title);
         question.setDescription(description);
         question.setTag(tag);
-        question.setCreator(user.getId());
+        question.setCreator(Math.toIntExact(user.getId()));
         question.setId(questionId);
 
         questionService.createOrUpdate(question);

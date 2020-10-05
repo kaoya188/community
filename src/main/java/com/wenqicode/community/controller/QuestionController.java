@@ -1,8 +1,6 @@
 package com.wenqicode.community.controller;
 
-import com.wenqicode.community.dto.PaginationDTO;
 import com.wenqicode.community.dto.QuestionDTO;
-import com.wenqicode.community.mapper.QuestionMapper;
 import com.wenqicode.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +20,10 @@ public class QuestionController {
 
     @GetMapping("/question/{id}")
     public String question(@PathVariable("id") Integer id, Model model) {
+        // 获取文章内容
         QuestionDTO questionDTO = questionService.getById(id);
+        // 累加阅读数
+        questionService.incView(id);
         model.addAttribute("question", questionDTO);
         return "question";
     }

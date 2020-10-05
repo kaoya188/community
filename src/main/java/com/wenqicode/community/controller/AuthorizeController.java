@@ -61,7 +61,7 @@ public class AuthorizeController {
             // 查询数据库, 更新数据库信息
             userService.createOrUpdate(user);
             response.addCookie(new Cookie("token", token));
-        } else {
+        }else {
             // 登录失败, 重新登录
         }
         return "redirect:/";

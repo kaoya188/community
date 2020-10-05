@@ -22,23 +22,11 @@ public class PaginationDTO {
     private List<Integer> pages = new ArrayList<>();
 
 
-    public void setPagination(Integer totalCount, Integer page, Integer size) {
+    public void setPagination(Integer totalPage, Integer page) {
 
-        // 1. 总页数的判断
-        if (totalCount % size == 0) {
-            totalPage = totalCount / size;
-        }else {
-            totalPage = totalCount / size + 1;
-        }
-
-        if (page < 1) {
-            page = 1;
-        }
-        if (page > totalPage) {
-            page = totalPage;
-        }
-
+        this.totalPage = totalPage;
         this.page = page;
+
 
         // 页码数设置
         pages.add(page);
