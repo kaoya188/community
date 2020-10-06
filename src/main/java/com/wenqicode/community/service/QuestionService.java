@@ -3,7 +3,8 @@ package com.wenqicode.community.service;
 import com.wenqicode.community.dto.PaginationDTO;
 import com.wenqicode.community.dto.QuestionDTO;
 import com.wenqicode.community.exception.CustomizeException;
-import com.wenqicode.community.exception.CustonizeErrorCode;
+import com.wenqicode.community.exception.CustomizeErrorCode;
+import com.wenqicode.community.mapper.QuestionExtMapper;
 import com.wenqicode.community.mapper.QuestionMapper;
 import com.wenqicode.community.mapper.UserMapper;
 import com.wenqicode.community.model.Question;
@@ -28,6 +29,8 @@ public class QuestionService {
     private UserMapper userMapper;
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
 
     public PaginationDTO list(Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
@@ -70,7 +73,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO list(Integer userId, Integer page, Integer size) {
+    public PaginationDTO list(Long userId, Integer page, Integer size) {
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(userId);
         Integer totalCount = (int) questionMapper.countByExample(example);
@@ -114,10 +117,10 @@ public class QuestionService {
     }
 
 
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null) {
-            throw new CustomizeException(CustonizeErrorCode.QUESTION_NOT_FOUND
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND
             );
         }
         QuestionDTO questionDTO = new QuestionDTO();
@@ -132,6 +135,9 @@ public class QuestionService {
             // 创建
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0);
+            question.setCommentCount(0);
+            question.setLikeCount(0);
             questionMapper.insert(question);
         } else {
             // 更新
@@ -145,18 +151,25 @@ public class QuestionService {
             int updated = questionMapper.updateByExampleSelective(updateQuestion, questionExample);
             if (updated != 1) {
                 throw new CustomizeException(
-                        CustonizeErrorCode.QUESTION_NOT_FOUND
+                        CustomizeErrorCode.QUESTION_NOT_FOUND
                 );
             }
         }
     }
 
-    public void incView(Integer id) {
-        Question question = questionMapper.selectByPrimaryKey(id);
-        Question updateQuestion = new Question();
-        updateQuestion.setViewCount(question.getViewCount() + 1);
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.createCriteria().andIdEqualTo(id);
-        questionMapper.updateByExampleSelective(updateQuestion, questionExample);
+    public void incView(Long id) {
+        // 并发不安全
+//        Question question = questionMapper.selectByPrimaryKey(id);
+//        Question updateQuestion = new Question();
+//        updateQuestion.setViewCount(question.getViewCount() + 1);
+//        QuestionExample questionExample = new QuestionExample();
+//        questionExample.createCriteria().andIdEqualTo(id);
+//        questionMapper.updateByExampleSelective(updateQuestion, questionExample);
+
+        // 并发安全
+        Question question = new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }

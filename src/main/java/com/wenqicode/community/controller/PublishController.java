@@ -29,7 +29,7 @@ public class PublishController {
     private UserMapper userMapper;
 
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable("id") Integer id,
+    public String edit(@PathVariable("id") Long id,
                        Model model) {
         QuestionDTO question = questionService.getById(id);
         // 问题回显
@@ -49,7 +49,7 @@ public class PublishController {
     public String doPublish(@RequestParam(value = "title", required = false) String title,
                             @RequestParam(value = "description", required = false) String description,
                             @RequestParam(value = "tag", required = false) String tag,
-                            @RequestParam(value = "questionId", required = false) Integer questionId,
+                            @RequestParam(value = "questionId", required = false) Long questionId,
                             HttpServletRequest request,
                             Model model) {
         // 设置显示的值至model中
@@ -82,7 +82,7 @@ public class PublishController {
         question.setTitle(title);
         question.setDescription(description);
         question.setTag(tag);
-        question.setCreator(Math.toIntExact(user.getId()));
+        question.setCreator(user.getId());
         question.setId(questionId);
 
         questionService.createOrUpdate(question);
