@@ -10,13 +10,16 @@ import com.wenqicode.community.mapper.UserMapper;
 import com.wenqicode.community.model.Question;
 import com.wenqicode.community.model.QuestionExample;
 import com.wenqicode.community.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Wenqi Liang
@@ -34,9 +37,7 @@ public class QuestionService {
 
     public PaginationDTO list(Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
-
         Integer totalPage;
-
         Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
         // 数据封装到分页对象中
         // 上一页和下一页越界的问题
@@ -57,7 +58,9 @@ public class QuestionService {
         // offset = (page - 1) * size
         // 分页查询数据
         Integer offset = (page - 1) * size;
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("gmt_create desc");
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample,
                 new RowBounds(offset, size));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questions) {
@@ -67,7 +70,6 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-
         paginationDTO.setQuestions(questionDTOList);
 
         return paginationDTO;
@@ -100,6 +102,7 @@ public class QuestionService {
         Integer offset = (page - 1) * size;
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(userId);
+        questionExample.setOrderByClause("gmt_create desc");
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset,
                 size));
         List<QuestionDTO> questionDTOList = new ArrayList<>();
@@ -171,5 +174,25 @@ public class QuestionService {
         question.setId(id);
         question.setViewCount(1);
         questionExtMapper.incView(question);
+    }
+
+    public List<QuestionDTO> selectRelated(QuestionDTO questionDTO) {
+        String tag = questionDTO.getTag();
+        if (StringUtils.isBlank(tag)) {
+            return new ArrayList<>();
+        }
+        // 将tags替换成正则表达式形式: p1,p2,p3 -> p1|p2|p3
+        String[] tags = StringUtils.split(tag, ",");
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+        Question question = new Question();
+        question.setId(questionDTO.getId());
+        question.setTag(regexpTag);
+        List<Question> questionList = questionExtMapper.selectRelated(question);
+        List<QuestionDTO> questionDTOS = questionList.stream().map(q -> {
+            QuestionDTO dto = new QuestionDTO();
+            BeanUtils.copyProperties(q, dto);
+            return dto;
+        }).collect(Collectors.toList());
+        return questionDTOS;
     }
 }

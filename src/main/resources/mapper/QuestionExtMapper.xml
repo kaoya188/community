@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wenqicode.community.mapper.QuestionExtMapper">
+
     <resultMap id="BaseResultMap" type="com.wenqicode.community.model.Question">
         <id column="ID" jdbcType="INTEGER" property="id"/>
         <result column="TITLE" jdbcType="VARCHAR" property="title"/>
@@ -30,6 +31,13 @@
     where id = #{record.id}
 
     </update>
+
+    <select id="selectRelated" parameterType="com.wenqicode.community.model.Question" resultMap="BaseResultMap">
+        select *
+        from question
+        where id != #{id}
+        and tag regexp #{tag}
+    </select>
 
 
 </mapper>

@@ -1,5 +1,6 @@
 package com.wenqicode.community.controller;
 
+import com.wenqicode.community.cache.TagCache;
 import com.wenqicode.community.dto.QuestionDTO;
 import com.wenqicode.community.mapper.UserMapper;
 import com.wenqicode.community.model.Question;
@@ -37,11 +38,13 @@ public class PublishController {
         model.addAttribute("title", question.getTitle());
         model.addAttribute("description", question.getDescription());
         model.addAttribute("questionId", question.getId());
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
     @GetMapping("/publish")
-    public String publish() {
+    public String publish(Model model) {
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
@@ -56,7 +59,7 @@ public class PublishController {
         model.addAttribute("tag", tag);
         model.addAttribute("title", title);
         model.addAttribute("description", description);
-
+        model.addAttribute("tags", TagCache.get());
         // 输入端不能为空
         if (StringUtils.isEmpty(title)) {
             model.addAttribute("error", "标题不能为空!");
@@ -68,6 +71,12 @@ public class PublishController {
         }
         if (StringUtils.isEmpty(tag)) {
             model.addAttribute("error", "标签不能为空!");
+            return "publish";
+        }
+        // 过滤非法标签
+        String invalid = TagCache.filterInvalid(tag);
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(invalid)){
+            model.addAttribute("error", "输入非法标签:" + invalid);
             return "publish";
         }
 

@@ -1,18 +1,22 @@
 package com.wenqicode.community.dto;
 
+import com.wenqicode.community.model.User;
 import lombok.Data;
 
 /**
- * 评论内容传输对象
- *
  * @author Wenqi Liang
- * @date 2020/10/6
+ * @date 2020/10/7
  */
 @Data
 public class CommentDTO {
-
+    private Long id;
     private Long parentId;
-    private String content;
     private Integer type;
-
+    private Long commentator;
+    private Long gmtCreate;
+    private Long gmtModified;
+    private Long likeCount;
+    private String content;
+    private Integer commentCount;
+    private User user;
 }
