@@ -1,4 +1,4 @@
-## YH中文社区
+## WQ中文社区
 
 ## 资料
 [Spring 文档](https://spring.io/guides)   
@@ -63,3 +63,8 @@ public class WebConfig implements WebMvcConfigurer {
 }
 ```
 
+## 项目总结
+
+### 1. 通知功能实现
+
+逻辑 : 用户回复问题 -> 展示信息通知数 -> 

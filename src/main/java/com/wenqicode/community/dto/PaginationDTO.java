@@ -10,9 +10,9 @@ import java.util.List;
  * @date 2020/10/2
  */
 @Data
-public class PaginationDTO {
+public class PaginationDTO<T> {
 
-    private List<QuestionDTO> questions;
+    private List<T> data;
     private Boolean showPrevious;
     private Boolean showNext;
     private Boolean showFirstPage;
@@ -48,7 +48,7 @@ public class PaginationDTO {
         }
 
         // 3. 是否展示下一页的情 况
-        if (page == totalPage) {
+        if (page.equals(totalPage)) {
             showNext = false;
         }else {
             showNext = true;

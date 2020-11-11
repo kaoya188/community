@@ -31,7 +31,7 @@
                 <h3><span class="glyphicon glyphicon-list" aria-hidden="true"></span>  发现</h3>
             </div>
             <hr>
-            <div class="media" th:each="question : ${paginationDTO.questions}">
+            <div class="media" th:each="question : ${paginationDTO.data}">
                 <div class="media-left media-middle">
                     <a href="#">
                         <img class="media-object img-rounded" th:src="${question.user.avatarUrl}" alt="用户头像">
